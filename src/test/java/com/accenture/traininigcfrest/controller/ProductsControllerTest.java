@@ -52,6 +52,10 @@ public class ProductsControllerTest {
 		ProductsTO productsTO = new ProductsTO();
 		productsTO.setName("Product Test");
 		productsTO.setManufacturer("MAnufacturerTest");
+		productsTO.setQuantity(10);
+		productsTO.setBasePrice(10.0);
+		productsTO.setSalesPrice(5.0);
+		
 		product = productsTO;
 		
 	}
