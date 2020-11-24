@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -49,15 +48,9 @@ public class UsersControllerTest {
 	private static UsersTO user;
 
 	private static void getuserTest() {
-		
-		Date newDate = new Date();
-		
+			
 		UsersTO UsersTO = new UsersTO();
 		UsersTO.setName("user Test");
-		UsersTO.setCreateAt(newDate);
-		UsersTO.setModifiedAt(newDate);
-		UsersTO.setCreatedBy("David");
-		UsersTO.setModifiedBy("David");
 		user = UsersTO;
 	}
 

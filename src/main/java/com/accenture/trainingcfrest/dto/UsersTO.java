@@ -1,13 +1,12 @@
 package com.accenture.trainingcfrest.dto;
 
-import java.util.Date;
 
 public class UsersTO {
 	
 	private String id;
 	private String name;
-	private Date createAt;
-	private Date modifiedAt;
+	private String createAt;
+	private String modifiedAt;
 	private String createdBy;
 	private String modifiedBy;
 	
@@ -23,16 +22,16 @@ public class UsersTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getCreateAt() {
+	public String getCreateAt() {
 		return createAt;
 	}
-	public void setCreateAt(Date createAt) {
+	public void setCreateAt(String createAt) {
 		this.createAt = createAt;
 	}
-	public Date getModifiedAt() {
+	public String getModifiedAt() {
 		return modifiedAt;
 	}
-	public void setModifiedAt(Date modifiedAt) {
+	public void setModifiedAt(String modifiedAt) {
 		this.modifiedAt = modifiedAt;
 	}
 	public String getCreatedBy() {

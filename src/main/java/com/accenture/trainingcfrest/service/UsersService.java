@@ -1,9 +1,11 @@
 package com.accenture.trainingcfrest.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.util.Strings;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,14 @@ public class UsersService {
 	ModelMapper mapper;
 	
 	public UsersTO saveUser(UsersTO user){
-		UsersEntity save = rep.save(mapper.map(user, UsersEntity.class));		
-		return mapper.map(save, UsersTO.class);
+		if (Strings.isEmpty(user.getId())) {
+			user.setCreatedBy("teste");
+			user.setCreateAt((LocalDateTime.now().toString()));
+		}
+			user.setModifiedBy("teste");
+			user.setCreateAt(LocalDateTime.now().toString());
+			UsersEntity savedEntity = rep.save(mapper.map(user, UsersEntity.class));
+		return mapper.map(savedEntity, UsersTO.class);
 	}
 	
 	public List<UsersTO> findall() {

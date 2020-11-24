@@ -1,14 +1,12 @@
 package com.accenture.trainingcfrest.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -32,20 +30,16 @@ public class ClientsEntity {
 	private String familyName;
 	
 	@Column(name = "CREATEDAT")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createDat;
+	private LocalDateTime createDat;
 	
 	@Column(name = "MODIFIEDAT")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date modifiedDat;
+	private LocalDateTime modifiedDat;
 	
 	@Column(name = "CREATEDBY")
 	private String createdBy;
 	
 	@Column(name = "MODIFIEDBY")
 	private String modifiedBy;
-	
-	
 	
 	public String getId() {
 		return id;
@@ -79,19 +73,19 @@ public class ClientsEntity {
 		this.familyName = familyName;
 	}
 
-	public Date getCreateDat() {
+	public LocalDateTime getCreateDat() {
 		return createDat;
 	}
 
-	public void setCreateDat(Date createDat) {
+	public void setCreateDat(LocalDateTime createDat) {
 		this.createDat = createDat;
 	}
 
-	public Date getModifiedDat() {
+	public LocalDateTime getModifiedDat() {
 		return modifiedDat;
 	}
 
-	public void setModifiedDat(Date modifiedDat) {
+	public void setModifiedDat(LocalDateTime modifiedDat) {
 		this.modifiedDat = modifiedDat;
 	}
 

@@ -1,5 +1,6 @@
 package com.accenture.trainingcfrest.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,9 +24,16 @@ public class ProductsService {
 	ModelMapper mapper;
 	
 	public ProductsTO saveProduct(ProductsTO product){
-		ProductsEntity save = rep.save(mapper.map(product, ProductsEntity.class));		
-		return mapper.map(save, ProductsTO.class);
+		if (Strings.isEmpty(product.getId())) {
+			product.setCreatedBy("teste");
+			product.setCreateAt((LocalDateTime.now().toString()));
+		}
+			product.setModifiedBy("teste");
+			product.setCreateAt(LocalDateTime.now().toString());
+			ProductsEntity savedEntity = rep.save(mapper.map(product, ProductsEntity.class));
+		return mapper.map(savedEntity, ProductsTO.class);
 	}
+	
 	
 	public List<ProductsTO> findall() {
         List<ProductsEntity> findAll = rep.findAll();

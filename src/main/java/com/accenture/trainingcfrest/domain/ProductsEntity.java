@@ -1,14 +1,12 @@
 package com.accenture.trainingcfrest.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -38,12 +36,10 @@ public class ProductsEntity {
 	private Integer quantity;
 	
 	@Column(name = "CREATEDAT")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createDat;
+	private LocalDateTime createDat;
 	
 	@Column(name = "MODIFIEDAT")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date modifiedDat;
+	private LocalDateTime modifiedDat;
 	
 	@Column(name = "CREATEDBY")
 	private String createdBy;
@@ -52,12 +48,10 @@ public class ProductsEntity {
 	private String modifiedBy;
 	
 	@Column(name = "VALIDFROM")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date validFrom;
+	private LocalDateTime validFrom;
 	
 	@Column(name = "VALIDTO")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date validTo;
+	private LocalDateTime validTo;
 	
 	public String getId() {
 		return id;
@@ -95,16 +89,16 @@ public class ProductsEntity {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-	public Date getCreateDat() {
+	public LocalDateTime getCreateDat() {
 		return createDat;
 	}
-	public void setCreateDat(Date createDat) {
+	public void setCreateDat(LocalDateTime createDat) {
 		this.createDat = createDat;
 	}
-	public Date getModifiedDat() {
+	public LocalDateTime getModifiedDat() {
 		return modifiedDat;
 	}
-	public void setModifiedDat(Date modifiedDat) {
+	public void setModifiedDat(LocalDateTime modifiedDat) {
 		this.modifiedDat = modifiedDat;
 	}
 	public String getCreatedBy() {
@@ -119,16 +113,16 @@ public class ProductsEntity {
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
-	public Date getValidFrom() {
+	public LocalDateTime getValidFrom() {
 		return validFrom;
 	}
-	public void setValidFrom(Date validFrom) {
+	public void setValidFrom(LocalDateTime validFrom) {
 		this.validFrom = validFrom;
 	}
-	public Date getValidTo() {
+	public LocalDateTime getValidTo() {
 		return validTo;
 	}
-	public void setValidTo(Date validTo) {
+	public void setValidTo(LocalDateTime validTo) {
 		this.validTo = validTo;
 	}	
 }
