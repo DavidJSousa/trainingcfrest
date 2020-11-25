@@ -31,6 +31,7 @@ public class ProductsService {
 			product.setModifiedBy("teste");
 			product.setCreateAt(LocalDateTime.now().toString());
 			ProductsEntity savedEntity = rep.save(mapper.map(product, ProductsEntity.class));
+			
 		return mapper.map(savedEntity, ProductsTO.class);
 	}
 	
