@@ -31,55 +31,61 @@ public class SalesOrderService {
 	@Autowired
 	ModelMapper mapper;
 
-	public List<SalesOrderTO> findall() {
-        List<SalesOrderEntity> results = repSalesOrder.findAll();       
-        return results.stream().map(item -> {
-            SalesOrderTO salesOrder = mapper.map(item, SalesOrderTO.class);
-           
-            List<SalesOrderItemTO> collect = item.getItems().stream().map(soi -> {
-                return mapper.map(soi, SalesOrderItemTO.class);
-            }).collect(Collectors.toList());
-            
-            salesOrder.setItems(collect);
-           
-            ClientsTO cli = mapper.map(item.getClient_id(), ClientsTO.class);
-            salesOrder.setClient_id(cli);
-           
-            UsersTO user = mapper.map(item.getUser_id(), UsersTO.class);
-            salesOrder.setUser_id(user);
-           
-            return salesOrder;
-        }).collect(Collectors.toList());
-    }
+	public List<SalesOrderTO> findall(String status){
+		List<SalesOrderEntity> result = null;
+		if (Strings.isEmpty(status)) {
+			result = repSalesOrder.internalFindAll();
+		} else {
+			result = repSalesOrder.findByStatusOrderByCreateDatDesc(status);
+		}
+		
+		return result.stream().map( item -> {
+			SalesOrderTO salesOrder = mapper.map(item,  SalesOrderTO.class);
+			
+			List<SalesOrderItemTO> collect = item.getItems().stream().map(salesOrderItem -> {
+				return mapper.map(salesOrderItem, SalesOrderItemTO.class);
+			}).collect(Collectors.toList());
+			
+			salesOrder.setItems(collect);
+			return salesOrder;
+			
+		}).collect(Collectors.toList());
+	}
 	
-	
-	 
-	
-	public SalesOrderTO saveSalesOrder(SalesOrderTO salesOrder){
+	public SalesOrderTO saveSalesOrder(SalesOrderTO salesOrder) {
 		SalesOrderEntity salesOrderEntity = mapper.map(salesOrder, SalesOrderEntity.class);
 		
-		
-		if (Strings.isEmpty(salesOrderEntity.getId())) {
+		if (Strings.isEmpty(salesOrderEntity.getId())){
 			salesOrderEntity.setCreatedBy("teste");
 			salesOrderEntity.setCreateDat(LocalDateTime.now());
 		}
-			salesOrderEntity.setModifiedBy("teste");
-			salesOrderEntity.setModifiedDat(LocalDateTime.now());
-			SalesOrderEntity savedEntity = repSalesOrder.save(salesOrderEntity);
-			
-			salesOrderEntity.getItems().stream().forEach(item -> item.setSalesOrderId(savedEntity));
-			repSalesOrderItem.saveAll(salesOrderEntity.getItems());
-			
+		salesOrderEntity.setModifiedBy("teste");
+		salesOrderEntity.setModifiedDat(LocalDateTime.now());
+		
+		SalesOrderEntity savedEntity = repSalesOrder.save(salesOrderEntity);
+		
+		salesOrderEntity.getItems().stream().forEach(item -> item.setSalesOrderId(savedEntity));		
+		repSalesOrderItem.saveAll(salesOrderEntity.getItems());
+		
 		return mapper.map(savedEntity, SalesOrderTO.class);
 	}
 	
+	
 	public SalesOrderTO findById(String id) {
-        Optional<SalesOrderEntity> findId = repSalesOrder.findById(id);
-        if(findId.isPresent()){
-            return mapper.map(findId.get(), SalesOrderTO.class);
-        }
-        return null;
-    }
+		SalesOrderEntity findById = repSalesOrder.internalFindById(id);
+		if(findById != null){
+			SalesOrderTO salesOrder = mapper.map(findById, SalesOrderTO.class);
+
+			List<SalesOrderItemTO> collect = salesOrder.getItems().stream().map(salesOrderItem -> {
+				return mapper.map(salesOrderItem, SalesOrderItemTO.class);
+			}).collect(Collectors.toList());
+			
+			salesOrder.setItems(collect);
+			
+			return salesOrder;
+		}
+		return null;
+	}
 	
 	
 	public String deleteSalesOrder(String id) {

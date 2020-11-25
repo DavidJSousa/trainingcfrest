@@ -5,8 +5,8 @@ import java.util.List;
 public class SalesOrderTO {
 	
 	private String id;
-	private UsersTO user_id;
-	private ClientsTO client_id;
+	private String user_id;
+	private String client_id;
 	private String status;
 	private String createAt;
 	private String modifiedAt;
@@ -50,16 +50,16 @@ public class SalesOrderTO {
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
-	public UsersTO getUser_id() {
+	public String getUser_id() {
 		return user_id;
 	}
-	public void setUser_id(UsersTO user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public ClientsTO getClient_id() {
+	public String getClient_id() {
 		return client_id;
 	}
-	public void setClient_id(ClientsTO client_id) {
+	public void setClient_id(String client_id) {
 		this.client_id = client_id;
 	}
 	public List<SalesOrderItemTO> getItems() {

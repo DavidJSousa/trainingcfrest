@@ -76,15 +76,17 @@ public class SalesOrderControllerTest {
 		SalesOrderItemTO salesOrderItemTO = new SalesOrderItemTO();
 		salesOrderItemTO.setProductId(productsTO);
 		salesOrderItemTO.setSalesOrderId("1");
+		salesOrderItemTO.setStatus("C");
 		salesOrderItemTO.setId("2");
 		
 		items.add(salesOrderItemTO);
 		
 		SalesOrderTO SalesOrderTO = new SalesOrderTO();
-		SalesOrderTO.setClient_id(ClientsTO);
+		SalesOrderTO.setClient_id("2");
 		SalesOrderTO.setStatus("C");
-		SalesOrderTO.setUser_id(UsersTO);
+		SalesOrderTO.setUser_id("1");
 		SalesOrderTO.setItems(items);
+		SalesOrderTO.setId("1");
 		salesOrder = SalesOrderTO;
 	}
 
@@ -123,9 +125,9 @@ public class SalesOrderControllerTest {
 	@Test
 	public void ab_changesalesOrder() throws UnsupportedEncodingException, Exception {
 
-		//String newName = "salesOrdere Teste Alterado";
+		String newStatus = "C";
 		
-		//salesOrder.setName(newName);
+		salesOrder.setStatus(newStatus);
 		final byte[] salesOrderAsByteArray = mapper.writeValueAsBytes(salesOrder);
 
 		final MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put("/SalesOrder/"+salesOrder.getId())
@@ -141,7 +143,7 @@ public class SalesOrderControllerTest {
 		final SalesOrderTO objResult = mapper.readValue(result, SalesOrderTO.class);
 
 		assertThat(objResult.getId()).isEqualTo(salesOrder.getId());
-		//assertThat(objResult.getName()).isEqualTo(newName);
+		assertThat(objResult.getStatus()).isEqualTo(newStatus);
 
 	}
 
@@ -167,7 +169,6 @@ public class SalesOrderControllerTest {
 	@Test
 	public void ad_getOnesalesOrder() throws UnsupportedEncodingException, Exception {
 
-		
 		final MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/SalesOrder/"+salesOrder.getId())
 				.characterEncoding(StandardCharsets.UTF_8.name()).contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON);
@@ -181,9 +182,7 @@ public class SalesOrderControllerTest {
 		final SalesOrderTO objResult = mapper.readValue(result, SalesOrderTO.class);
 		assertThat(objResult.getId()).isEqualTo(salesOrder.getId());
 		
-		//assertThat(objResults.getitems().size()).isGreaterThan(1)
-		//assertThat(objResults.getitems().get(0).getQuantity)).isEqual(123);
-
+		assertThat(objResult.getItems().size()).isGreaterThan(0);
 	}
 	@Test
 	public void az_deletesalesOrder() throws UnsupportedEncodingException, Exception {
