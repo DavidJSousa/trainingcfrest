@@ -72,6 +72,7 @@ public class SalesOrderControllerTest {
 		
 		UsersTO UsersTO = new UsersTO();
 		UsersTO.setName("user Test");
+		UsersTO.setId("1");
 		
 		SalesOrderItemTO salesOrderItemTO = new SalesOrderItemTO();
 		salesOrderItemTO.setProductId(productsTO);
@@ -82,9 +83,9 @@ public class SalesOrderControllerTest {
 		items.add(salesOrderItemTO);
 		
 		SalesOrderTO SalesOrderTO = new SalesOrderTO();
-		SalesOrderTO.setClient_id("2");
+		SalesOrderTO.setClient_id(ClientsTO);
 		SalesOrderTO.setStatus("C");
-		SalesOrderTO.setUser_id("1");
+		SalesOrderTO.setUser_id(UsersTO);
 		SalesOrderTO.setItems(items);
 		SalesOrderTO.setId("1");
 		salesOrder = SalesOrderTO;

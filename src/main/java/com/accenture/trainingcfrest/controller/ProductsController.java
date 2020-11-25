@@ -1,9 +1,11 @@
 package com.accenture.trainingcfrest.controller;
+import com.sap.cloud.security.xsuaa.token.Token;
 
  
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +33,7 @@ public class ProductsController {
     }
     
     @GetMapping(value = "")
-    public List<ProductsTO> getProducts(){
+    public List<ProductsTO> getProducts(/*@AuthenticationPrincipal Token token*/){
         return service.findall();
     }
     
