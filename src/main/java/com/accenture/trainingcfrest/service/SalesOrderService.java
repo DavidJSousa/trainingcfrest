@@ -30,46 +30,52 @@ public class SalesOrderService {
 	
 	@Autowired
 	ModelMapper mapper;
-
+	
 	public List<SalesOrderTO> findall(String status){
-		List<SalesOrderEntity> result = null;
-		if (Strings.isEmpty(status)) {
-			result = repSalesOrder.internalFindAll();
-		} else {
-			result = repSalesOrder.findByStatusOrderByCreateDatDesc(status);
-		}
-		
-		return result.stream().map( item -> {
-			SalesOrderTO salesOrder = mapper.map(item,  SalesOrderTO.class);
-			
-			List<SalesOrderItemTO> collect = item.getItems().stream().map(salesOrderItem -> {
-				return mapper.map(salesOrderItem, SalesOrderItemTO.class);
-			}).collect(Collectors.toList());
-			
-			salesOrder.setItems(collect);
-			return salesOrder;
-			
-		}).collect(Collectors.toList());
-	}
+        List<SalesOrderEntity> result = null;
+      
+        if (Strings.isEmpty(status)){
+            result = repSalesOrder.findAll();
+        } else {
+            result = repSalesOrder.findByStatusOrderByCreateDatDesc(status);
+        }
+      
+        return result.stream().map(item -> {
+            SalesOrderTO salesOrder = mapper.map(item, SalesOrderTO.class);
+            return salesOrder;
+            
+        }).collect(Collectors.toList());
+    }
 	
-	public SalesOrderTO saveSalesOrder(SalesOrderTO salesOrder) {
-		SalesOrderEntity salesOrderEntity = mapper.map(salesOrder, SalesOrderEntity.class);
-		
-		if (Strings.isEmpty(salesOrderEntity.getId())){
-			salesOrderEntity.setCreatedBy("teste");
-			salesOrderEntity.setCreateDat(LocalDateTime.now());
-		}
-		salesOrderEntity.setModifiedBy("teste");
-		salesOrderEntity.setModifiedDat(LocalDateTime.now());
-		
-		SalesOrderEntity savedEntity = repSalesOrder.save(salesOrderEntity);
-		
-		salesOrderEntity.getItems().stream().forEach(item -> item.setSalesOrderId(savedEntity));		
-		repSalesOrderItem.saveAll(salesOrderEntity.getItems());
-		
-		return mapper.map(savedEntity, SalesOrderTO.class);
+	public SalesOrderTO saveSalesOrder(SalesOrderTO salesOrder){
+        SalesOrderEntity salesOrderE = mapper.map(salesOrder, SalesOrderEntity.class);
+        
+        if(Strings.isEmpty(salesOrder.getId())){
+            salesOrderE.setCreateDat(LocalDateTime.now());
+            salesOrderE.setCreatedBy("app");
+        }
+
+        salesOrderE.setModifiedDat(LocalDateTime.now());
+        salesOrderE.setModifiedBy("app");
+        
+        SalesOrderEntity savedEntity = repSalesOrder.saveAndFlush(salesOrderE);
+        salesOrderE.getItems().stream().forEach(item -> {
+            item.setSalesOrderId(savedEntity);
+            
+            if(Strings.isEmpty(salesOrder.getId())){
+                item.setCreateDat(LocalDateTime.now());
+                item.setCreatedBy("app");
+            }
+            
+            item.setModifiedDat(LocalDateTime.now());
+            item.setModifiedBy("app");
+            
+            repSalesOrderItem.save(item);
+            }
+        );
+        
+        return mapper.map(savedEntity, SalesOrderTO.class);
 	}
-	
 	
 	public SalesOrderTO findById(String id) {
 		SalesOrderEntity findById = repSalesOrder.internalFindById(id);
@@ -87,13 +93,20 @@ public class SalesOrderService {
 		return null;
 	}
 	
-	
-	public String deleteSalesOrder(String id) {
-		if(repSalesOrder.existsById(id)) {
-			repSalesOrder.deleteById(id);
-			return "Success";	
-		} else {
-			return "Insucess";
-		}
-	}
+	public boolean deleteSalesOrder(String id){
+        Optional<SalesOrderEntity> result = repSalesOrder.findById(id);
+        boolean present = result.isPresent();
+       
+        if(present){
+            SalesOrderEntity so = result.get();
+            so.getItems().stream().forEach(item -> {
+                repSalesOrderItem.delete(item);
+            });
+           
+            repSalesOrder.delete(so);
+        }
+       
+        return present;
+    }
+
 }

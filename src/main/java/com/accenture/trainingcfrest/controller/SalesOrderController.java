@@ -41,7 +41,7 @@ public class SalesOrderController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-    public String deleteSalesOrder(@PathVariable(value="id") String id) {
+    public boolean deleteSalesOrder(@PathVariable(value="id") String id) {
     	return service.deleteSalesOrder(id);
     }
 	
